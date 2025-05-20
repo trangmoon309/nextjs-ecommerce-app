@@ -1,19 +1,22 @@
 import { convertToPlainObject } from '../utils';
 import { LATEST_PRODUCTS_LIMIT } from '../constants';
 import { prisma } from '@/db/prisma';
+import { Product } from '@prisma/client';
 
 // Get latest products
-export async function getLatestProducts() {
+export async function getLatestProducts(): Promise<Product[]> {
   try {
     const data = await prisma.product.findMany({
-      take: LATEST_PRODUCTS_LIMIT ?? 10,
+      take: LATEST_PRODUCTS_LIMIT,
       orderBy: {
         createdAt: 'desc',
       },
     });
+
     return convertToPlainObject(data);
   } catch (err) {
     console.error('🔥 Prisma findMany failed:', err);
+    return []; // fallback in case of error
   }
 }
 

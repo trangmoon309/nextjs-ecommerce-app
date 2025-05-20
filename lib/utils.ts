@@ -5,13 +5,15 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-// convert prisma object into a regular JS object
+// convert prisma object into a regular JS objects
 export function convertToPlainObject<T>(value: T): T {
   return JSON.parse(JSON.stringify(value));
 }
 
 // format number with decimal places
 export function formatNumberWithDecimal(num: number): string {
-  const { int, decimal } = num.toString().split('.');
+  const strings = num.toString().split('.');
+  const int = strings[0];
+  const decimal = strings[1];
   return decimal ? `${int}.${decimal.padEnd(2, '0')}` : `${int}.00`;
 }
