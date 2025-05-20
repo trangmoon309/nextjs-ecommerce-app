@@ -1,6 +1,6 @@
 -- CreateTable
 CREATE TABLE "Product" (
-    "id" UUID NOT NULL DEFAULT gen_random_uuid,
+    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "name" TEXT NOT NULL,
     "slug" TEXT NOT NULL,
     "category" TEXT NOT NULL,
