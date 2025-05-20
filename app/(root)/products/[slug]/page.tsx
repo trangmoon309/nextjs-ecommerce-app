@@ -6,12 +6,11 @@ import { Card, CardContent } from '@/components/ui/card';
 import ProductPrice from '@/components/shared/product/product-price';
 import ProductImage from '@/components/shared/product/product-image';
 
-const ProductDetailPage = async (props: { params: { slug: string } }) => {
-  const { slug } = props.params;
-  console.log('🔍 Slug from params:', slug);
+type Params = Promise<{ slug: string }>;
 
+const ProductDetailPage = async ({ params }: { params: Params }) => {
+  const { slug } = await params;
   const product = await getProductBySlug(slug);
-  console.log('📦 Product fetched:', product);
 
   if (!product) {
     console.log('❌ Product not found, triggering 404.');
@@ -34,7 +33,7 @@ const ProductDetailPage = async (props: { params: { slug: string } }) => {
               </p>
               <h1 className="h3-bold">{product.name}</h1>
               <p>
-                {product.rating} of {product.numReviews}
+                {product.rating.toString()} of {product.numReviews}
               </p>
               <div className="flex flex-col sm:flex-row sm:items-center">
                 <ProductPrice
