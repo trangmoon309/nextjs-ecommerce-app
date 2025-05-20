@@ -1,10 +1,10 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
 import '../assets/styles/globals.css';
-import { APP_NAME, APP_DES, SERVER_URL } from "@/lib/constants";
-import { ThemeProvider } from "next-themes";
+import { APP_NAME, APP_DES, SERVER_URL } from '@/lib/constants';
+import { ThemeProvider } from 'next-themes';
 
-const inter = Inter({subsets: ['latin']});
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: {
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     default: APP_NAME,
   },
   description: APP_DES,
-  metadataBase: new URL(SERVER_URL)
+  metadataBase: new URL(SERVER_URL),
 };
 
 export default function RootLayout({
@@ -22,11 +22,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${inter.className} antialiase`}
-      >
+      <body className={`${inter.className} antialiase`}>
         <ThemeProvider
-          attribute='class'
+          attribute="class"
           defaultTheme="light"
           enableSystem
           disableTransitionOnChange
