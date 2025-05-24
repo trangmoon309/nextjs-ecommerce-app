@@ -69,4 +69,9 @@ export const config = {
   },
 } satisfies NextAuthConfig; // ensure the configuration object compatible with NextAuthConfig
 
+// When the user clicks the "Sign In" button
+// The signIn() function from next-auth is called
+// This triggers a request to NextAuth's built-in route, like: /api/auth/callback/credentials (for credentials) or /api/auth/signin (for OAuth)
+// These routes are handled internally by the exported handlers (GET, POST)
+// Which come from below code.
 export const { handlers, auth, signIn, signOut } = NextAuth(config);
