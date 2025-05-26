@@ -66,7 +66,7 @@ const ProductDetailPage = async ({ params }: { params: Params }) => {
                   )}
                 </div>
                 {product.stock > 0 && (
-                  <div className="flex-center">
+                  <div className="flex justify-center items-center">
                     <Button className="w-full bg-black text-white">Add To Cart</Button>
                   </div>
                 )}
