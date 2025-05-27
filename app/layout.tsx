@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import '../assets/styles/globals.css';
 import { APP_NAME, APP_DES, SERVER_URL } from '@/lib/constants';
 import { ThemeProvider } from 'next-themes';
+import { ToastContainer } from 'react-toastify';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -31,6 +32,7 @@ export default function RootLayout({
         >
           {children}
         </ThemeProvider>
+        <ToastContainer />
       </body>
     </html>
   );

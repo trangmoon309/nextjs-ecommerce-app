@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import ProductPrice from '@/components/shared/product/product-price';
 import ProductImage from '@/components/shared/product/product-image';
+import AddToCart from '@/components/shared/product/add-to-cart';
 
 type Params = Promise<{ slug: string }>;
 
@@ -67,7 +68,16 @@ const ProductDetailPage = async ({ params }: { params: Params }) => {
                 </div>
                 {product.stock > 0 && (
                   <div className="flex justify-center items-center">
-                    <Button className="w-full bg-black text-white">Add To Cart</Button>
+                    <AddToCart
+                      item={{
+                        productId: product.id,
+                        name: product.name,
+                        slug: product.slug,
+                        price: product.price.toString(),
+                        qty: 1,
+                        image: product.images![0],
+                      }}
+                    ></AddToCart>
                   </div>
                 )}
               </CardContent>
