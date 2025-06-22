@@ -6,12 +6,14 @@ import { Card, CardContent } from '@/components/ui/card';
 import ProductPrice from '@/components/shared/product/product-price';
 import ProductImage from '@/components/shared/product/product-image';
 import AddToCart from '@/components/shared/product/add-to-cart';
+import { getMyCart } from '@/lib/actions/cart.action';
 
 type Params = Promise<{ slug: string }>;
 
 const ProductDetailPage = async ({ params }: { params: Params }) => {
   const { slug } = await params;
   const product = await getProductBySlug(slug);
+  const cart = await getMyCart();
 
   if (!product) {
     console.log('❌ Product not found, triggering 404.');
@@ -69,6 +71,7 @@ const ProductDetailPage = async ({ params }: { params: Params }) => {
                 {product.stock > 0 && (
                   <div className="flex justify-center items-center">
                     <AddToCart
+                      cart={cart}
                       item={{
                         productId: product.id,
                         name: product.name,

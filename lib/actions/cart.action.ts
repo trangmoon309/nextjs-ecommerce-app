@@ -24,6 +24,37 @@ const calcPrice = (items: CartItem[]) => {
   };
 };
 
+export async function getMyCart() {
+  try {
+    const cookieStore = cookies();
+    const session = await auth();
+    const userId = session?.user?.id ? (session?.user.id as string) : '1';
+    const cart = await prisma.cart.findFirst({
+      where: { userId: userId },
+    });
+    if (!cart) {
+      return {
+        success: false,
+        message: 'Cart not found',
+      };
+    }
+    const cartItems = (cart.items as CartItem[]).map((item) => {
+      return {
+        ...item,
+        price: Number(item.price).toFixed(2),
+      };
+    });
+    const cartTotals = calcPrice(cartItems);
+    return {
+      ...convertToPlainObject(cart),
+      items: cartItems,
+      ...cartTotals,
+    };
+  } catch (error) {
+    return null;
+  }
+}
+
 export async function addItemToCart(data: CartItem) {
   try {
     const cookieStore = cookies();
