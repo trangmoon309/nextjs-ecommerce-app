@@ -71,6 +71,17 @@ export const config = {
       return session;
     },
   },
+  cookies: {
+    sessionToken: {
+      name: `next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: 'lax',
+        path: '/',
+        secure: process.env.NODE_ENV === 'development',
+      },
+    },
+  },
   async jwt({ token, user, trigger, session }: any) {
     // Assign user fields to token
     if (user) {
@@ -88,6 +99,8 @@ export const config = {
 
       return token;
     }
+
+    return token;
   },
   authorized({ request, auth }: any) {
     // Check for session cart cookie

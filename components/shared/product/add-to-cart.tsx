@@ -9,8 +9,6 @@ const AddToCart = ({ item }: { item: CartItem }) => {
   const handleAddToCart = async () => {
     const res = await addItemToCart(item);
 
-    console.log('res :>> ', res);
-
     if (!res.success) {
       toast.error(res.message);
       return;

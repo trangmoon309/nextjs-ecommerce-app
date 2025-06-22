@@ -54,9 +54,9 @@ export const cartItemSchema = z.object({
 export const insertCartSchema = z.object({
   items: z.array(cartItemSchema),
   itemsPrice: currency,
-  totalPrices: currency,
+  totalPrice: currency,
   shippingPrice: currency,
   taxPrice: currency,
-  sessionCardId: z.string().min(1, 'Session card id is required'),
-  userId: z.string().optional().nullable(),
+  sessionCartId: z.string().min(1, 'Session card id is required'),
+  userId: z.string().min(1, 'User id is required'),
 });
