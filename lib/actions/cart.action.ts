@@ -33,10 +33,7 @@ export async function getMyCart() {
       where: { userId: userId },
     });
     if (!cart) {
-      return {
-        success: false,
-        message: 'Cart not found',
-      };
+      return null;
     }
     const cartItems = (cart.items as CartItem[]).map((item) => {
       return {

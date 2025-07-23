@@ -43,3 +43,21 @@ export function round2(value: number | string) {
     throw new Error('Value is not a number or a string');
   }
 }
+
+const CURRENCY_FORMAT = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+});
+
+// Format currency using the forrmatter above
+export function formatCurrency(value: number | string): string {
+  if (typeof value === 'number') {
+    return CURRENCY_FORMAT.format(value);
+  } else if (typeof value === 'string') {
+    return CURRENCY_FORMAT.format(Number(value));
+  } else {
+    throw new Error('Value is not a number or a string');
+  }
+}

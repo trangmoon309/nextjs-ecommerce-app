@@ -13,3 +13,13 @@ export const signUpDefaultValue = {
   password: '',
   confirmPassword: '',
 };
+
+export const shippingAddressDefaultValue = {
+  fullName: 'Trang Huynh',
+  address: '304 Tan Ky Tan Quy',
+  city: 'Ho Chi Minh City',
+  postalCode: '700000',
+  country: 'Vietnam',
+  lat: 10.762622,
+  lng: 106.660172,
+};
