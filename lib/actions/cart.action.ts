@@ -5,9 +5,10 @@ import { convertToPlainObject, formatError, round2 } from '../utils';
 import { cookies } from 'next/headers';
 import { auth } from '@/auth';
 import { prisma } from '@/db/prisma';
-import { cartItemSchema, insertCartSchema } from '../validator';
+import { cartItemSchema, insertCartSchema, paymentMethodSchema } from '../validator';
 import { revalidatePath } from 'next/cache';
 import { Prisma } from '@prisma/client';
+import { z } from 'zod';
 
 // Calculate cart prices
 const calcPrice = (items: CartItem[]) => {
