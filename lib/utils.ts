@@ -61,3 +61,24 @@ export function formatCurrency(value: number | string): string {
     throw new Error('Value is not a number or a string');
   }
 }
+
+// Shorten UUID
+export function shortenUUID(uuid: string): string {
+  if (typeof uuid !== 'string' || uuid.length < 8) {
+    throw new Error('Invalid UUID');
+  }
+  return `${uuid.slice(0, 8)}...${uuid.slice(-4)}`;
+}
+
+// Format date and times
+export function formatDateTime(date: Date | string): string {
+  const d = new Date(date);
+  return d.toLocaleString('en-US', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+  });
+}
