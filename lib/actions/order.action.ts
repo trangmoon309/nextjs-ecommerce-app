@@ -188,7 +188,7 @@ export async function createPaypalOrder(orderId: string) {
 }
 
 // Approve PayPal order and update order to paid
-export async function approvePaypalOrder(orderId: string, payerId: string) {
+export async function approvePaypalOrder(orderId: string, data: { orderID: string }) {
   try {
     const order = await getOrderById(orderId);
     if (!order) {
