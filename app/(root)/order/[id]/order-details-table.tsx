@@ -26,7 +26,7 @@ const OrderDetailsTable = ({ order, paypalClientId }: { order: Order; paypalClie
   const {
     id,
     shippingAddress,
-    orderItems,
+    orderitems,
     itemsPrice,
     shippingPrice,
     taxPrice,
@@ -81,13 +81,11 @@ const OrderDetailsTable = ({ order, paypalClientId }: { order: Order; paypalClie
               <h2 className="text-xl pb-4">Payment Method</h2>
               <p className="mb-2">{paymentMethod}</p>
               {isPaid ? (
-                <Badge variant={'secondary'} className="mt-2">
+                <Badge className="mt-2 bg-green-600 text-white">
                   Paid at {formatDateTime(paidAt!)}
                 </Badge>
               ) : (
-                <Badge variant={'destructive'} className="mt-2">
-                  Not Paid
-                </Badge>
+                <Badge className="mt-2 bg-red-600 text-white">Not Paid</Badge>
               )}
             </CardContent>
           </Card>
@@ -100,13 +98,11 @@ const OrderDetailsTable = ({ order, paypalClientId }: { order: Order; paypalClie
                 {shippingAddress.postalCode} {shippingAddress.country}
               </p>
               {isPaid ? (
-                <Badge variant={'secondary'} className="mt-2">
+                <Badge className="mt-2 bg-green-600 text-white">
                   Delivered at {formatDateTime(deliveredAt!)}
                 </Badge>
               ) : (
-                <Badge variant={'destructive'} className="mt-2">
-                  Not Delivered
-                </Badge>
+                <Badge className="mt-2 bg-red-600 text-white">Not Delivered</Badge>
               )}
             </CardContent>
           </Card>
@@ -122,7 +118,7 @@ const OrderDetailsTable = ({ order, paypalClientId }: { order: Order; paypalClie
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {orderItems.map((item) => (
+                  {orderitems.map((item) => (
                     <TableRow key={item.slug}>
                       <TableCell>
                         <Link href={`/product/${item.slug}`}>

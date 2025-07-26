@@ -9,9 +9,11 @@ const metadata: Metadata = {
   description: 'View your order details',
 };
 
-const OrderDetailPage = async (props: { param: Promise<{ id: string }> }) => {
-  const { id } = await props.param;
+const OrderDetailPage = async ({ params }: { params: { id: string } }) => {
+  const { id } = params;
   const order = await getOrderById(id);
+
+  console.log('order :>> ', order);
 
   if (!order) {
     notFound();
