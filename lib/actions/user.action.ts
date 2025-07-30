@@ -5,6 +5,7 @@ import {
   shippingAddressSchema,
   signInFormSchema,
   signUpFormSchema,
+  updateUserProfileSchema,
 } from '../validator';
 import { auth, signIn, signOut } from '@/auth';
 import { isRedirectError } from 'next/dist/client/components/redirect-error';
@@ -12,6 +13,7 @@ import { hashSync } from 'bcrypt-ts-edge';
 import { prisma } from '@/db/prisma';
 import { formatError } from '../utils';
 import { ShippingAddress } from '@/types';
+import z from 'zod';
 
 // Sign in the user with credentials
 export async function signInWithCredentials(prevState: unknown, formData: FormData) {
@@ -166,6 +168,45 @@ export async function updateUserPaymentMethod(data: z.infer<typeof paymentMethod
       message: "User's payment method updated successfully",
     };
   } catch (error) {
+    return {
+      success: false,
+      message: formatError(error),
+    };
+  }
+}
+
+// Update user profile
+export async function updateUserProfile(data: { name: string; email: string }) {
+  try {
+    const session = await auth();
+    if (!session?.user?.id) {
+      throw new Error('User not authenticated');
+    }
+
+    const userId = session.user.id;
+    const user = await prisma.user.findUnique({ where: { id: userId } });
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    // Validate the input data
+    const updatedData = updateUserProfileSchema.parse(data);
+
+    // Update the user's profile in the database
+    await prisma.user.update({
+      where: { id: userId },
+      data: {
+        name: updatedData.name,
+      },
+    });
+
+    return {
+      success: true,
+      message: 'User profile updated successfully',
+    };
+  } catch (error) {
+    console.error('Error updating user profile:', error);
     return {
       success: false,
       message: formatError(error),

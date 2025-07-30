@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { APP_NAME } from '@/lib/constants';
 import Menu from './menu';
+import MainNav from '@/app/user/main-nav';
 
 const Header = () => {
   return (
@@ -16,8 +17,9 @@ const Header = () => {
               width={48}
               priority
             />
-            <span className="font-bold text-2xl ml-3">{APP_NAME}</span>
+            {/* <span className="font-bold text-2xl ml-3">{APP_NAME}</span> */}
           </Link>
+          <MainNav className="mx-6" />
         </div>
         <div className="space-x-2">
           <Menu />

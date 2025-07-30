@@ -83,6 +83,12 @@ export const config = {
     },
   },
   async jwt({ token, user, trigger, session }: any) {
+    // Handle session updates
+    console.log('JWT callback:', { trigger, session, user });
+    if (trigger === 'update' && session?.user.name) {
+      token.name = session.user.name;
+    }
+
     // Assign user fields to token
     if (user) {
       token.role = user.role;
