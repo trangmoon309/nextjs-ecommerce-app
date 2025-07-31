@@ -314,3 +314,62 @@ export async function getMyOrders({ limit = PAGE_SIZE, page }: { limit?: number;
     };
   }
 }
+
+type SalesDataType = {
+  month: string;
+  totalSales: number;
+};
+
+// Get sales data and order summary
+export async function getOrderSummary() {
+  // Get counts for each resource
+  const ordersCount = await prisma.order.count();
+  const usersCount = await prisma.user.count();
+  const productsCount = await prisma.product.count();
+
+  // Caculate total sales
+  const totalSales = await prisma.order.aggregate({
+    _sum: {
+      totalPrice: true,
+    },
+  });
+
+  // Get monthy sales data
+  const salesDataRaw = await prisma.$queryRaw<{ month: string; totalSales: Prisma.Decimal }[]>`
+    SELECT 
+      TO_CHAR("createdAt", 'MM/YY') AS month,
+      SUM("totalPrice") AS totalSales
+    FROM "Order"
+    GROUP BY month
+    ORDER BY month ASC
+  `;
+
+  const monthlySales: SalesDataType[] = salesDataRaw.map((sale) => ({
+    month: sale.month,
+    totalSales: Number((sale as any).totalsales ?? (sale as any).totalSales ?? 0),
+  }));
+
+  // Get latest sales
+  const latestSales = await prisma.order.findMany({
+    orderBy: { createdAt: 'desc' },
+    take: 6,
+    include: {
+      orderitems: true,
+      user: {
+        select: {
+          name: true,
+          email: true,
+        },
+      },
+    },
+  });
+
+  return {
+    ordersCount,
+    usersCount,
+    productsCount,
+    totalSales,
+    monthlySales,
+    latestSales,
+  };
+}

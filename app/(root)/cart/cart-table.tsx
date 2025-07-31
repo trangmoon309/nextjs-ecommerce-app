@@ -24,7 +24,7 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
   const [isPending, startTransition] = useTransition();
   return (
     <>
-      <h1 className="py-4 h2-bold">Your Shopping Cart</h1>
+      <h1 className="py-4 font-bold text-2xl lg:text-3xl;">Your Shopping Cart</h1>
       {!cart || cart.items.length === 0 ? (
         <div>
           Cart is empty. <Link href="/">Go Shopping</Link>

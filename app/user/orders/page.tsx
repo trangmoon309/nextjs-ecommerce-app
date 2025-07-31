@@ -26,7 +26,7 @@ const OrdersPage = async (props: { searchParams: Promise<{ page: string }> }) =>
 
   return (
     <div className="space-y-2">
-      <h2 className="h2-bold">Orders</h2>
+      <h2 className="font-bold text-2xl lg:text-3xl;">Orders</h2>
       <div className="overflow-x-auto">
         <Table>
           <TableHeader>

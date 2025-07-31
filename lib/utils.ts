@@ -63,6 +63,23 @@ export function formatCurrency(value: number | string): string {
   }
 }
 
+// Format number
+const NUMBER_FORMATTER = new Intl.NumberFormat('en-US', {
+  style: 'decimal',
+  minimumFractionDigits: 0,
+  maximumFractionDigits: 2,
+});
+
+export function formatNumber(value: number | string): string {
+  if (typeof value === 'number') {
+    return NUMBER_FORMATTER.format(value);
+  } else if (typeof value === 'string') {
+    return NUMBER_FORMATTER.format(Number(value));
+  } else {
+    throw new Error('Value is not a number or a string');
+  }
+}
+
 // Shorten UUID
 export function shortenUUID(uuid: string): string {
   if (typeof uuid !== 'string' || uuid.length < 8) {

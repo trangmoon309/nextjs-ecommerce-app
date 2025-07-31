@@ -14,7 +14,7 @@ const ProfilePage = async () => {
   return (
     <SessionProvider session={session}>
       <div className="max-w-md mx-auto space-y-4">
-        <h1 className="font-bold">Profile</h1>
+        <h1 className="font-bold text-2xl lg:text-3xl;">Profile</h1>
         <p>{session?.user?.name}</p>
         <ProfileForm />
       </div>
