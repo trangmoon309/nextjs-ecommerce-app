@@ -373,3 +373,61 @@ export async function getOrderSummary() {
     latestSales,
   };
 }
+
+// Get all orders
+export async function getAllOrders({ limit = PAGE_SIZE, page }: { limit?: number; page: number }) {
+  const orders = await prisma.order.findMany({
+    skip: (page - 1) * limit,
+    take: limit,
+    orderBy: { createdAt: 'desc' },
+    include: {
+      orderitems: true,
+      user: {
+        select: {
+          name: true,
+          email: true,
+        },
+      },
+    },
+  });
+
+  const totalOrders = await prisma.order.count();
+
+  return {
+    data: orders,
+    totalPages: Math.ceil(totalOrders / limit),
+  };
+}
+
+// Delete an order
+export async function deleteOrder(orderId: string): Promise<{ success: boolean; message: string }> {
+  try {
+    const order = await getOrderById(orderId);
+    if (!order) {
+      throw new Error('Order not found');
+    }
+
+    // Delete order items first
+    await prisma.orderItem.deleteMany({
+      where: { orderId: orderId },
+    });
+
+    // Then delete the order
+    await prisma.order.delete({
+      where: { id: orderId },
+    });
+
+    revalidatePath('/admin/orders');
+
+    return {
+      success: true,
+      message: 'Order deleted successfully',
+    };
+  } catch (error) {
+    console.error('Error deleting order:', error);
+    return {
+      success: false,
+      message: formatError(error).toString(),
+    };
+  }
+}

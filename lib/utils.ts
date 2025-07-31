@@ -85,7 +85,7 @@ export function shortenUUID(uuid: string): string {
   if (typeof uuid !== 'string' || uuid.length < 8) {
     throw new Error('Invalid UUID');
   }
-  return `${uuid.slice(0, 8)}...${uuid.slice(-4)}`;
+  return uuid.slice(0, 8).toUpperCase();
 }
 
 // Format date and times
