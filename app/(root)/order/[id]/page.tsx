@@ -3,6 +3,8 @@ import { getOrderById } from '@/lib/actions/order.action';
 import { notFound } from 'next/navigation';
 import { ShippingAddress } from '@/types';
 import OrderDetailsTable from './order-details-table';
+import { auth } from '@/auth';
+import { getUserById } from '@/lib/actions/user.action';
 
 const metadata: Metadata = {
   title: 'Order Detail',
@@ -13,11 +15,13 @@ const OrderDetailPage = async ({ params }: { params: { id: string } }) => {
   const { id } = params;
   const order = await getOrderById(id);
 
-  console.log('order :>> ', order);
-
   if (!order) {
     notFound();
   }
+
+  const session = await auth();
+  const user = await getUserById(session?.user?.id || '');
+  const isAdmin = user?.role === 'admin';
 
   return (
     <OrderDetailsTable
@@ -26,6 +30,7 @@ const OrderDetailPage = async ({ params }: { params: { id: string } }) => {
         shippingAddress: order.shippingAddress as ShippingAddress,
       }}
       paypalClientId={process.env.PAYPAL_CLIENT_ID || 'sb'}
+      isAdmin={isAdmin}
     />
   );
 };

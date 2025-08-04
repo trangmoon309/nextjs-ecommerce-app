@@ -155,7 +155,7 @@ export async function updateUserPaymentMethod(data: z.infer<typeof paymentMethod
     }
 
     // Validate payment method
-    paymentMethodSchema.parse(paymentMethod);
+    // paymentMethodSchema.parse(paymentMethod);
 
     // Update the user's payment method in the database
     await prisma.user.update({

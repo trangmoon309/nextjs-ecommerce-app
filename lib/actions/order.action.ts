@@ -68,8 +68,6 @@ export async function createOrder() {
       paymentResult: Prisma.JsonNull,
     });
 
-    console.log('order :>> ', order);
-
     // Create transaction to create order and order items in database
     const insertedOrderId = await prisma.$transaction(async (tx) => {
       try {
@@ -428,6 +426,81 @@ export async function deleteOrder(orderId: string): Promise<{ success: boolean; 
     return {
       success: false,
       message: formatError(error).toString(),
+    };
+  }
+}
+
+// Update COD order to paid
+export async function updateCODOrderToPaid(orderId: string) {
+  try {
+    var order = await getOrderById(orderId);
+
+    if (!order) {
+      throw new Error('Order not found');
+    }
+
+    await updateOrderToPaid({
+      orderId,
+      paymentResult: {
+        id: orderId,
+        status: 'COMPLETED',
+        email_address: '',
+        pricePaid: order.totalPrice.toString(),
+      } as PaymentResult,
+    });
+
+    revalidatePath(`/order/${orderId}`);
+
+    return {
+      success: true,
+      message: 'Order has been marked as paid successfully',
+    };
+  } catch (error) {
+    console.error('Error updating COD order to paid:', error);
+    return {
+      success: false,
+      message: formatError(error),
+    };
+  }
+}
+
+// Update COD order to delivered
+export async function updateCODOrderToDelivered(orderId: string) {
+  try {
+    var order = await getOrderById(orderId);
+
+    if (!order) {
+      throw new Error('Order not found');
+    }
+
+    if (order.isDelivered) {
+      throw new Error('Order is already delivered');
+    }
+
+    if (!order.isPaid) {
+      throw new Error('Order is not paid yet');
+    }
+
+    // Update order to delivered
+    await prisma.order.update({
+      where: { id: orderId },
+      data: {
+        isDelivered: true,
+        deliveredAt: new Date(),
+      },
+    });
+
+    revalidatePath(`/order/${orderId}`);
+
+    return {
+      success: true,
+      message: 'Order has been marked as delivered successfully',
+    };
+  } catch (error) {
+    console.error('Error updating COD order to delivered:', error);
+    return {
+      success: false,
+      message: formatError(error),
     };
   }
 }
