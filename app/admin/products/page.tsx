@@ -36,7 +36,11 @@ const AdminProductPage = async (props: {
     <div className="space-y-2">
       <div className="flex-between">
         <h1 className="font-bold text-2xl lg:text-3xl">Products</h1>
-        <Button asChild variant="default" className="bg-black text-white hover:bg-gray-800">
+        <Button
+          asChild
+          variant="default"
+          className="bg-black text-white hover:bg-gray-800 mt-2.5 mb-2.5"
+        >
           <Link href="/admin/products/create">Create Product</Link>
         </Button>
       </div>
