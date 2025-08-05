@@ -100,8 +100,6 @@ export async function createProduct(data: z.infer<typeof insertProductSchema>) {
       },
     });
 
-    await prisma.product.create({ data: product });
-
     revalidatePath('/admin/products');
 
     return {
