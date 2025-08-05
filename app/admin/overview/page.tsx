@@ -44,7 +44,7 @@ const AdminOverviewPage = async () => {
             <BadgeDollarSign />
           </CardHeader>
           <CardContent className="text-2xl font-bold">
-            {formatCurrency(summary.totalSales._sum.totalPrice!.toString() || '0')}
+            {formatCurrency(summary.totalSales._sum.totalPrice?.toString() || '0')}
           </CardContent>
         </Card>
         <Card>

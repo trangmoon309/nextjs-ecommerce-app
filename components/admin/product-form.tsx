@@ -16,6 +16,7 @@ import { createProduct, updateProduct } from '@/lib/actions/product.action';
 import { toast } from 'react-toastify';
 import { UploadButton } from '@/lib/uploadthing';
 import { Card, CardContent } from '../ui/card';
+import { Checkbox } from '../ui/checkbox';
 import Image from 'next/image';
 
 const ProductForm = ({
@@ -33,6 +34,8 @@ const ProductForm = ({
     defaultValues: product && type === 'Update' ? product : productDefaultValues,
   });
   const images = form.watch('images');
+  const isFeatured = form.watch('isFeatured');
+  const banner = form.watch('banner');
 
   const onSubmit: SubmitHandler<z.infer<typeof insertProductSchema>> = async (data) => {
     if (type === 'Create') {
@@ -80,7 +83,7 @@ const ProductForm = ({
                 <FormControl>
                   <Input {...field} type="text" placeholder="Product Name" />
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="text-red-500" />
               </FormItem>
             )}
           />
@@ -106,14 +109,15 @@ const ProductForm = ({
                       type="button"
                       className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-1 rounded-l-none rounded ml-2"
                       onClick={() => {
-                        form.setValue('slug', slugify(field.value, { lower: true, strict: true }));
+                        const name = form.getValues('name');
+                        form.setValue('slug', slugify(name, { lower: true, strict: true }));
                       }}
                     >
                       Generate
                     </Button>
                   </div>
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="text-red-500" />
               </FormItem>
             )}
           />
@@ -132,7 +136,7 @@ const ProductForm = ({
                 <FormControl>
                   <Input {...field} type="text" placeholder="Product Category" />
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="text-red-500" />
               </FormItem>
             )}
           />
@@ -149,7 +153,7 @@ const ProductForm = ({
                 <FormControl>
                   <Input {...field} type="text" placeholder="Product Brand" />
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="text-red-500" />
               </FormItem>
             )}
           />
@@ -168,7 +172,7 @@ const ProductForm = ({
                 <FormControl>
                   <Input {...field} type="text" placeholder="Product Price" />
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="text-red-500" />
               </FormItem>
             )}
           />
@@ -185,7 +189,7 @@ const ProductForm = ({
                 <FormControl>
                   <Input {...field} type="text" placeholder="Product Stock" />
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="text-red-500" />
               </FormItem>
             )}
           />
@@ -226,12 +230,68 @@ const ProductForm = ({
                     </div>
                   </CardContent>
                 </Card>
-                <FormMessage />
+                <FormMessage className="text-red-500" />
               </FormItem>
             )}
           />
         </div>
-        <div className="upload-field"></div>
+        <div className="upload-field">
+          Feature Product
+          <Card>
+            <CardContent className="space-y-2 mt-2">
+              <FormField
+                control={form.control}
+                name="isFeatured"
+                render={({ field }) => (
+                  <FormItem className="space-x-2 items-center">
+                    <FormLabel>Is Featured?</FormLabel>
+                    <FormControl>
+                      <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                    </FormControl>
+                    <FormMessage className="text-red-500" />
+                  </FormItem>
+                )}
+              />
+              {isFeatured && banner && (
+                <div className="flex items-center space-x-2">
+                  <Image
+                    src={banner}
+                    alt="Banner Image"
+                    className="w-full object-cover object-center rounded-sm"
+                    width={1920}
+                    height={680}
+                  />
+                </div>
+              )}
+
+              {isFeatured && !banner && (
+                <FormField
+                  control={form.control}
+                  name="banner"
+                  render={({ field }) => (
+                    <FormItem className="w-full">
+                      <FormLabel>Banner Image</FormLabel>
+                      <FormControl>
+                        <UploadButton
+                          endpoint="imageUploader"
+                          className="bg-emerald-950 text-white py-3 px-4"
+                          onClientUploadComplete={(res: { url: string }[]) => {
+                            form.setValue('banner', res[0].url);
+                            toast.success('Banner uploaded successfully!');
+                          }}
+                          onUploadError={(error: Error) => {
+                            toast.error(`Error uploading banner: ${error.message}`);
+                          }}
+                        />
+                      </FormControl>
+                      <FormMessage className="text-red-500" />
+                    </FormItem>
+                  )}
+                />
+              )}
+            </CardContent>
+          </Card>
+        </div>
         <div>
           <FormField
             control={form.control}
@@ -246,7 +306,7 @@ const ProductForm = ({
                 <FormControl>
                   <Textarea {...field} placeholder="Product Description" className="resize-none" />
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="text-red-500" />
               </FormItem>
             )}
           />
