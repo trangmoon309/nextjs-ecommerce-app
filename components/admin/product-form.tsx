@@ -203,7 +203,7 @@ const ProductForm = ({
                 <FormLabel>Images</FormLabel>
                 <Card>
                   <CardContent className="space-y-2 mt-2 min-h-48">
-                    <div className="flex-start space-x-2">
+                    <div className="flex justify-start items-center space-x-2">
                       {images.map((image) => (
                         <Image
                           key={image}
