@@ -25,6 +25,40 @@ const sortOptions = [
   { name: 'Top Rated', value: 'rating' },
 ];
 
+export async function generateMetadata(props: {
+  searchParams: Promise<{
+    query: string;
+    price: string;
+    category: string;
+    rating: string;
+  }>;
+}) {
+  const {
+    query = 'all',
+    price = 'all',
+    category = 'all',
+    rating = 'all',
+  } = await props.searchParams;
+
+  const isQuerySet = query && query !== 'all' && query.trim() !== '';
+  const isPrice = price && price !== 'all' && price.trim() !== '';
+  const isCategory = category && category !== 'all' && category.trim() !== '';
+  const isRating = rating && rating !== 'all' && rating.trim() !== '';
+
+  if (isQuerySet || isPrice || isCategory || isRating) {
+    return {
+      title: `Search ${isQuerySet ? query : ''}
+      ${isCategory ? `: Category ${category}` : ''}
+      ${isPrice ? `: Price ${price}` : ''}
+      ${isRating ? `: Rating ${rating}` : ''}`,
+    };
+  } else {
+    return {
+      title: 'Search Product',
+    };
+  }
+}
+
 const SearchPage = async (props: {
   searchParams: {
     query?: string;
