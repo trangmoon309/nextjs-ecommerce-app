@@ -46,6 +46,7 @@ const AdminOrdersPage = async (props: {
             <TableRow>
               <TableHead>ID</TableHead>
               <TableHead>DATE</TableHead>
+              <TableHead>BUYER</TableHead>
               <TableHead>TOTAL</TableHead>
               <TableHead>PAID</TableHead>
               <TableHead>DELIVERED</TableHead>
@@ -59,6 +60,7 @@ const AdminOrdersPage = async (props: {
                   <Link href={`/order/${order.id}`}>{shortenUUID(order.id)}</Link>
                 </TableCell>
                 <TableCell>{formatDateTime(order.createdAt)}</TableCell>
+                <TableCell>{order?.user?.name}</TableCell>
                 <TableCell>{formatCurrency(Number(order.totalPrice))}</TableCell>
                 <TableCell>
                   {order.isPaid && order.paidAt ? (

@@ -32,10 +32,30 @@ const AdminProductPage = async (props: {
     category: categoryFilter,
   });
 
+  console.log('product :>> ', product);
+
   return (
     <div className="space-y-2">
       <div className="flex-between">
-        <h1 className="font-bold text-2xl lg:text-3xl">Products</h1>
+        <div className="flex items-center gap-3">
+          <h1 className="font-bold text-2xl lg:text-3xl">Products</h1>
+          <br></br>
+          {searchText && (
+            <div>
+              Filtered by <i>&quot;{searchText}&quot;</i>
+              {'   '}
+              <Link href={`/admin/products`}>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="bg-white text-black hover:bg-gray-300"
+                >
+                  Remove Filter
+                </Button>
+              </Link>
+            </div>
+          )}
+        </div>
         <Button
           asChild
           variant="default"
