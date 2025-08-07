@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { formatNumberWithDecimal } from './utils';
 import { PAYMENT_METHODS } from './constants';
+import { id } from 'zod/v4/locales';
 
 const currency = z
   .string()
@@ -123,4 +124,10 @@ export const updateUserProfileSchema = z.object({
 // Schema for updating product
 export const updateProductSchema = insertProductSchema.extend({
   id: z.string().min(1, 'Id is required'),
+});
+
+// Schema for updating user
+export const updateUserSchema = updateUserProfileSchema.extend({
+  id: z.string().min(1, 'Id is required'),
+  role: z.string().min(1, 'Role is required'),
 });
