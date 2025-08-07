@@ -18,6 +18,13 @@ const ratings = [
   { name: '1 star & up', value: '1' },
 ];
 
+const sortOptions = [
+  { name: 'Newest', value: 'newest' },
+  { name: 'Lowest', value: 'lowest' },
+  { name: 'Highest', value: 'heighest' },
+  { name: 'Top Rated', value: 'rating' },
+];
+
 const SearchPage = async (props: {
   searchParams: {
     query?: string;
@@ -165,6 +172,21 @@ const SearchPage = async (props: {
                 <Link href="/search">Clear Filters</Link>
               </Button>
             ) : null}
+          </div>
+          <div className="flex flex-row">
+            Sort by:{' '}
+            <ul className="space-y-1 flex flex-row">
+              {sortOptions.map((option) => (
+                <li key={option.value}>
+                  <Link
+                    className={`mx-2 ${sort === option.value ? 'font-bold' : ''}`}
+                    href={getFilterUrl({ s: option.value })}
+                  >
+                    {option.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">

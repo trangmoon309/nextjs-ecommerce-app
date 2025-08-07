@@ -93,12 +93,23 @@ export async function getAllProducts({
     };
   }
 
+  // Sorting logic
+  let orderBy: any = { createdAt: 'desc' };
+  if (sort === 'lowest') {
+    orderBy = { price: 'asc' };
+  } else if (sort === 'heighest') {
+    orderBy = { price: 'desc' };
+  } else if (sort === 'rating') {
+    orderBy = { rating: 'desc' };
+  }
+
+  console.log('orderby :>> ', orderBy);
+  console.log('sort :>> ', sort);
+
   const data = await prisma.product.findMany({
     skip: (page - 1) * limit,
     take: limit,
-    orderBy: {
-      createdAt: 'desc',
-    },
+    orderBy,
     where,
   });
 
