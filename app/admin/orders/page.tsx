@@ -22,9 +22,9 @@ export const metadata: Metadata = {
 };
 
 const AdminOrdersPage = async (props: {
-  searchParams: Promise<{ page?: string; limit?: string }>;
+  searchParams: Promise<{ page?: string; limit?: string; query: string }>;
 }) => {
-  const { page = '1' } = await props.searchParams;
+  const { page = '1', query: searchText } = await props.searchParams;
   const session = await auth();
   const user = await getUserById(session?.user.id || '');
 
@@ -35,11 +35,39 @@ const AdminOrdersPage = async (props: {
   const orders = await getAllOrders({
     page: Number(page),
     limit: 2,
+    query: searchText,
   });
 
   return (
     <div className="space-y-2">
-      <h2 className="font-bold text-2xl lg:text-3xl;">Orders</h2>
+      <div className="flex-between">
+        <div className="flex items-center gap-3">
+          <h1 className="font-bold text-2xl lg:text-3xl">Orders</h1>
+          <br></br>
+          {searchText && (
+            <div>
+              Filtered by <i>&quot;{searchText}&quot;</i>
+              {'   '}
+              <Link href={`/admin/orders`}>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="bg-white text-black hover:bg-gray-300"
+                >
+                  Remove Filter
+                </Button>
+              </Link>
+            </div>
+          )}
+        </div>
+        <Button
+          asChild
+          variant="default"
+          className="bg-black text-white hover:bg-gray-800 mt-2.5 mb-2.5"
+        >
+          <Link href="/admin/products/create">Create Product</Link>
+        </Button>
+      </div>
       <div className="overflow-x-auto">
         <Table>
           <TableHeader>
