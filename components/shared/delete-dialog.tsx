@@ -49,7 +49,7 @@ const DeleteDialog = ({
           {isPending ? 'Deleting...' : 'Delete'}
         </Button>
       </AlertDialogTrigger>
-      <AlertDialogContent>
+      <AlertDialogContent className="bg-white">
         <AlertDialogHeader>
           <AlertDialogTitle>Are you sure?</AlertDialogTitle>
           <AlertDialogDescription>

@@ -47,18 +47,49 @@ export async function getAllProducts({
   limit = PAGE_SIZE,
   page,
   category,
+  price,
+  rating,
+  sort,
 }: {
   query: string;
   limit?: number;
   page: number;
   category?: string;
+  price?: string;
+  rating?: string;
+  sort?: string;
 }) {
   const where: any = {};
 
-  if (query) {
+  if (query && query !== 'all') {
     where.name = {
       contains: query,
       mode: 'insensitive',
+    };
+  }
+
+  if (category && category !== 'all') {
+    where.category = category;
+  }
+
+  // Price range support
+  if (price && price !== 'all') {
+    if (price.includes('-')) {
+      const [min, max] = price.split('-').map(Number);
+      where.price = {
+        gte: min,
+        lte: max,
+      };
+    } else {
+      where.price = {
+        lte: Number(price),
+      };
+    }
+  }
+
+  if (rating && rating !== 'all') {
+    where.rating = {
+      gte: Number(rating),
     };
   }
 

@@ -4,6 +4,7 @@ import { APP_NAME } from '@/lib/constants';
 import Menu from './menu';
 import MainNav from '@/app/user/main-nav';
 import CategoryDrawer from './category-draw';
+import Search from './search';
 
 const Header = () => {
   return (
@@ -22,6 +23,9 @@ const Header = () => {
             {/* <span className="font-bold text-2xl ml-3">{APP_NAME}</span> */}
           </Link>
           <MainNav className="mx-6" />
+        </div>
+        <div className="hidden md:block">
+          <Search />
         </div>
         <div className="space-x-2">
           <Menu />
