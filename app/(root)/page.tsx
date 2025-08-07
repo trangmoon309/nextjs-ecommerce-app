@@ -1,8 +1,10 @@
+import ProductCarousel from '@/components/shared/product/product-carousel';
 import ProductList from '@/components/shared/product/product-list';
-import { getLatestProducts } from '@/lib/actions/product.action';
+import { getFeaturedProducts, getLatestProducts } from '@/lib/actions/product.action';
 
 const Homepage = async () => {
   const latestProducts = await getLatestProducts();
+  const featuredProducts = await getFeaturedProducts();
 
   const normalized = latestProducts.map((product) => ({
     ...product,
@@ -12,6 +14,7 @@ const Homepage = async () => {
 
   return (
     <>
+      {featuredProducts.length > 0 && <ProductCarousel data={featuredProducts} />}
       <ProductList
         // data={sampleData.products}
         data={normalized}
