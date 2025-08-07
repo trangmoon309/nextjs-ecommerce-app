@@ -218,11 +218,29 @@ export async function updateUserProfile(data: { name: string; email: string }) {
 }
 
 // Get all the users
-export async function getAllUsers({ limit = PAGE_SIZE, page }: { limit?: number; page: number }) {
+export async function getAllUsers({
+  limit = PAGE_SIZE,
+  page,
+  query,
+}: {
+  limit?: number;
+  page: number;
+  query: string;
+}) {
+  const where: any = {};
+
+  if (query) {
+    where.name = {
+      contains: query,
+      mode: 'insensitive',
+    };
+  }
+
   const data = await prisma.user.findMany({
     orderBy: { createdAt: 'desc' },
     take: limit,
     skip: (page - 1) * limit,
+    where,
   });
 
   const dataCount = await prisma.user.count();

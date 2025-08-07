@@ -20,11 +20,14 @@ const metadata: Metadata = {
   description: 'Manage users in the admin panel.',
 };
 
-const AdminUsersPage = async (props: { searchParams: Promise<{ page: string }> }) => {
-  const { page = '1' } = await props.searchParams;
+const AdminUsersPage = async (props: {
+  searchParams: Promise<{ page: string; query: string }>;
+}) => {
+  const { page = '1', query: searchText } = await props.searchParams;
   const users = await getAllUsers({
     limit: 10,
     page: Number(page),
+    query: searchText,
   });
 
   console.log('users :>> ', users);
@@ -35,7 +38,27 @@ const AdminUsersPage = async (props: { searchParams: Promise<{ page: string }> }
 
   return (
     <div className="space-y-2">
-      <h2 className="font-bold text-2xl lg:text-3xl;">Users</h2>
+      <div className="flex-between">
+        <div className="flex items-center gap-3">
+          <h1 className="font-bold text-2xl lg:text-3xl">Users</h1>
+          <br></br>
+          {searchText && (
+            <div>
+              Filtered by <i>&quot;{searchText}&quot;</i>
+              {'   '}
+              <Link href={`/admin/users`}>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="bg-white text-black hover:bg-gray-300"
+                >
+                  Remove Filter
+                </Button>
+              </Link>
+            </div>
+          )}
+        </div>
+      </div>
       <div className="overflow-x-auto">
         <Table>
           <TableHeader>
