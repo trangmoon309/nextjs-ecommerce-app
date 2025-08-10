@@ -28,15 +28,18 @@ import {
 import { toast } from 'react-toastify';
 import { useTransition } from 'react';
 import { Button } from '@/components/ui/button';
+import StripePayment from './stripe-payment';
 
 const OrderDetailsTable = ({
   order,
   paypalClientId,
   isAdmin,
+  stripeClientSecret,
 }: {
   order: Order;
   paypalClientId: string;
   isAdmin: boolean;
+  stripeClientSecret: string | null;
 }) => {
   const {
     id,
@@ -225,6 +228,17 @@ const OrderDetailsTable = ({
                       onApprove={handleApprovePaypalOrder}
                     />
                   </PayPalScriptProvider>
+                </div>
+              )}
+
+              {/* Stripe payment section */}
+              {!isPaid && paymentMethod === 'Stripe' && (
+                <div>
+                  <StripePayment
+                    priceInCents={Math.round(Number(totalPrice) * 100)}
+                    orderId={order.id}
+                    stripeClientSecret={stripeClientSecret}
+                  />
                 </div>
               )}
 
