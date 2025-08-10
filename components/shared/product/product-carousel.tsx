@@ -40,11 +40,6 @@ const ProductCarousel = async ({ data }: { data: Product[] }) => {
                     sizes="100vw"
                     className="w-full h-auto object-cover"
                   />
-                  <div className="absolute inset-0 flex items-end justify-center">
-                    <h2 className="bg-gray-900 bg-opacity-50 text-2xl font-bold px-2 text-white">
-                      {product.name}
-                    </h2>
-                  </div>
                 </div>
               </Link>
             </CarouselItem>

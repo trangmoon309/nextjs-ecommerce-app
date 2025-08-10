@@ -44,3 +44,9 @@ export const productDefaultValues = {
 };
 
 export const USER_ROLES = ['admin', 'user'];
+export const reviewFormDefaultValues = {
+  title: '',
+  description: '',
+  rating: 0,
+  isVerifiedPurchase: true,
+};
