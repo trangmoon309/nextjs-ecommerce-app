@@ -32,6 +32,6 @@ export async function POST(req: NextRequest) {
   }
 
   return NextResponse.json({
-    message: 'updateOrderToPaid was successfully',
+    message: 'event is not charge.succeeded',
   });
 }

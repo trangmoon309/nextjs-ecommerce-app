@@ -50,3 +50,5 @@ export const reviewFormDefaultValues = {
   rating: 0,
   isVerifiedPurchase: true,
 };
+
+export const SENDER_EMAIL = process.env.SENDER_EMAIL || 'onboarding@resend.dev';

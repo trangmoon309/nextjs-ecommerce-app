@@ -13,7 +13,7 @@ const metadata: Metadata = {
 };
 
 const OrderDetailPage = async ({ params }: { params: { id: string } }) => {
-  const { id } = params;
+  const { id } = await params;
   const order = await getOrderById(id);
 
   if (!order) {

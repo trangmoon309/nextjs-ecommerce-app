@@ -8,10 +8,11 @@ import { getUserById } from './user.action';
 import { insertOrderSchema } from '../validator';
 import { prisma } from '@/db/prisma';
 import { Prisma } from '@prisma/client';
-import { CartItem, PaymentResult } from '@/types';
+import { CartItem, PaymentResult, ShippingAddress } from '@/types';
 import { paypal } from '../paypal';
 import { revalidatePath } from 'next/cache';
 import { PAGE_SIZE } from '../constants';
+import { sendPurchaseReceipt } from '@/email';
 
 // Create order and create order items
 export async function createOrder() {
@@ -246,6 +247,34 @@ export async function updateOrderToPaid({
   if (order.isPaid) {
     throw new Error('Order is already paid');
   }
+
+  sendPurchaseReceipt({
+    ...order,
+    shippingAddress: order.shippingAddress as ShippingAddress,
+    itemsPrice: order.itemsPrice?.toString?.() ?? '',
+    totalPrice: order.totalPrice?.toString?.() ?? '',
+    shippingPrice: order.shippingPrice?.toString?.() ?? '',
+    taxPrice: order.taxPrice?.toString?.() ?? '',
+    orderitems: order.orderitems.map((item: any) => ({
+      name: item.name ?? '',
+      slug: item.slug ?? '',
+      price: item.price?.toString?.() ?? '',
+      productId: item.productId ?? '',
+      image: item.image ?? '',
+      qty: item.qty ?? 0,
+    })),
+    user: {
+      name: order.user?.name ?? '',
+      email: order.user?.email ?? '',
+    },
+    id: order.id,
+    createdAt: order.createdAt,
+    isPaid: order.isPaid,
+    isDelivered: order.isDelivered,
+    paidAt: order.paidAt,
+    deliveredAt: order.deliveredAt,
+    paymentMethod: order.paymentMethod,
+  });
 
   // Transaction to update order and payment result
   await prisma.$transaction(async (tx) => {
